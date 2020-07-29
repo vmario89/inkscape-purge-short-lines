@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-
-import sys
-sys.path.append('/usr/share/inkscape/extensions')
+#!/usr/bin/env python3
 
 # Purge short lines
 # This script is designed to be used to clean up/simplify 2D vector exports from
@@ -9,8 +6,6 @@ sys.path.append('/usr/share/inkscape/extensions')
 
 import inkex
 import math
-from simplestyle import *
-
 debug = False
 
 class EnerothPurgeShortEdges(inkex.Effect):
@@ -45,13 +40,13 @@ class EnerothPurgeShortEdges(inkex.Effect):
             for i, word in enumerate(words):
                 if len(word) == 1:
                     instruction = word
-                    # inkex.debug(word)		  
+                    # inkex.utils.debug(word)		  
                 else:
     	        # Sometimes there is the case that "coords" returns only an array like [-1.29] (only one coordinate) instead of XY coordinates. Reason is the type "map"
                     coords = list(map(lambda c: float(c), word.split(',')))
-                    # inkex.debug(coords)
+                    # inkex.utils.debug(coords)
                     if instruction.lower() == instruction:
-                        # inkex.debug("coords len=" + str(len(coords)) + "prev_coords len=" + str(len(prev_coords)))
+                        # inkex.utils.debug("coords len=" + str(len(coords)) + "prev_coords len=" + str(len(prev_coords)))
                         try:
                             coords[0] += prev_coords[0]
                             coords[1] += prev_coords[1]
@@ -59,16 +54,16 @@ class EnerothPurgeShortEdges(inkex.Effect):
                             # coords[1] += prev_coords[1]
                             prev_coords = coords
                             # Assume all coordinates are points of straight lines (instructor being M, m, L or l)
-                            # inkex.debug("X=" + str(coords[0]) + "Y=" + str(coords[1]))  
+                            # inkex.utils.debug("X=" + str(coords[0]) + "Y=" + str(coords[1]))  
                             points.append(coords)
-                            # inkex.debug("pointsCount=" + str(len(points))) 
+                            # inkex.utils.debug("pointsCount=" + str(len(points))) 
                             if len(points) == 2:
                                 length = math.sqrt((points[0][0]-points[1][0])**2 + (points[0][1]-points[1][1])**2)
-                                # inkex.debug("length=" + str(length))		         
+                                # inkex.utils.debug("length=" + str(length))		         
                             if debug:
-                                inkex.debug(length)
+                                inkex.utils.debug(length)
                             if length < self.options.length:
-                            # inkex.debug("delete")
+                            # inkex.utils.debug("delete")
                                 node.getparent().remove(node)
                         except:
                             pass #ignore errors in case of vertical lines or horizonal lines
